@@ -28,7 +28,7 @@ terraform apply -auto-approve
 
 and take a note of the public IP address and ID of the instance. (You can recover these at any time with `terraform output`.). Alternatively, you can run `./create.sh <instance_type>`.
 
-The script in `bootstrap.sh` will be run on startup. This mounts the persistent EBS volume at `\home` and can be used to install any packages you want. You can then SSH into the instance with:
+The script in `bootstrap.sh` will be run on startup. This mounts the persistent EBS volume at `/home` and can be used to install any packages you want. You can then SSH into the instance with:
 
 ```bash
 ssh ubuntu@<public_ip>
