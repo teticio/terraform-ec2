@@ -15,5 +15,5 @@ variable "public_key_path" {
 
 variable "volume_size" {
   type    = number
-  default = 20
+  default = 30
 }

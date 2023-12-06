@@ -46,3 +46,17 @@ aws ec2 wait instance-terminated --instance-ids <instance_id>
 or `./terminate.sh`.
 
 If you re-run the apply command, Terraform will create a new instance with a new public IP address. Note that your home EBS volume will persist until you run `terraform destroy -auto-approve`. If you simply change the instance type in `terraform.tfvars` and re-run `terraform apply -auto-approve`, Terraform will create a new instance and attach the existing EBS volume to it.
+
+## Grow your own EBS
+
+To increase your the size of your EBS volume without destroying your data, first change the `volume_size` variable in `terraform.tfvars` and connect to your instance. In the instance, run:
+
+```bash
+if [ -e /dev/xvda ]; then
+    sudo resize2fs /dev/xvda
+else
+    sudo resize2fs /dev/nvme1n1
+fi
+```
+
+You can then run `df -h /home` to check that the volume has been resized.
