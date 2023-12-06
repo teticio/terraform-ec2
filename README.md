@@ -19,11 +19,9 @@ volume_size     = 20                  # Size of home EBS volume in GB
 public_key_path = "~/.ssh/id_rsa.pub" # Path to public key
 
 # Commands to run on startup
-# For example, to install nginx:
 startup_commands = [
     "apt-get update",
-    "apt-get install -y nginx",
-    "systemctl start nginx"
+    "apt-get install -y python3-pip", # Install pip
 ]
 ```
 
