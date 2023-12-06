@@ -4,7 +4,7 @@ Terraform code to quickly spin up an EC2 instance in AWS. A persistent EBS volum
 
 ## Usage
 
-Ensure you have a public key (usually in `~/.ssh/id_rsa.pub`). If not, you can create one with:
+Ensure you have a public key (for example in `~/.ssh/id_rsa.pub`). If not, you can create one with:
     
 ```bash
 ssh-keygen
