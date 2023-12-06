@@ -21,9 +21,9 @@ public_key_path = "~/.ssh/id_rsa.pub" # Path to public key
 # Commands to run on startup
 # For example, to install nginx:
 startup_commands = [
-    "sudo apt-get update",
-    "sudo apt-get install -y nginx",
-    "sudo systemctl start nginx"
+    "apt-get update",
+    "apt-get install -y nginx",
+    "systemctl start nginx"
 ]
 ```
 
