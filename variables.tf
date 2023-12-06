@@ -19,6 +19,6 @@ variable "volume_size" {
 }
 
 variable "startup_commands" {
-  type = list(string)
+  type    = list(string)
   default = []
 }

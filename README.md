@@ -18,10 +18,12 @@ instance_type   = "t2.micro"          # EC2 instance type
 volume_size     = 20                  # Size of home EBS volume in GB
 public_key_path = "~/.ssh/id_rsa.pub" # Path to public key
 
-# Commands to run on startup
+# Commands to run on startup (e.g. to install pip)
 startup_commands = [
-    "apt-get update",
-    "apt-get install -y python3-pip", # Install pip
+  <<-EOL
+    apt-get update
+    apt-get install -y python3-pip
+  EOL
 ]
 ```
 
@@ -52,6 +54,8 @@ aws ec2 wait instance-terminated --instance-ids <instance_id>
 or `./terminate.sh`.
 
 If you re-run the apply command, Terraform will create a new instance with a new public IP address. Note that your home EBS volume will persist until you run `terraform destroy -auto-approve`. If you simply change the instance type in `terraform.tfvars` and re-run `terraform apply -auto-approve`, Terraform will create a new instance and attach the existing EBS volume to it.
+
+To debug issues with the `startup_commands`, you can SSH into the instance and inspect the output from `tail -f /var/log/cloud-init-output.log`. Bear in mind that the script may still be running in the background.
 
 ## Grow your own EBS
 
