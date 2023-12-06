@@ -15,5 +15,10 @@ variable "public_key_path" {
 
 variable "volume_size" {
   type    = number
-  default = 30
+  default = 20
+}
+
+variable "startup_commands" {
+  type = list(string)
+  default = []
 }

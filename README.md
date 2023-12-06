@@ -17,6 +17,14 @@ region          = "eu-west-2"         # AWS region
 instance_type   = "t2.micro"          # EC2 instance type
 volume_size     = 20                  # Size of home EBS volume in GB
 public_key_path = "~/.ssh/id_rsa.pub" # Path to public key
+
+# Commands to run on startup
+# For example, to install nginx:
+startup_commands = [
+    "sudo apt-get update",
+    "sudo apt-get install -y nginx",
+    "sudo systemctl start nginx"
+]
 ```
 
 Then run:
@@ -28,7 +36,7 @@ terraform apply -auto-approve
 
 and take a note of the public IP address and ID of the instance. (You can recover these at any time with `terraform output`.). Alternatively, you can run `./create.sh <instance_type>`.
 
-The script in `bootstrap.sh` will be run on startup. This mounts the persistent EBS volume at `/home` and can be used to install any packages you want. You can then SSH into the instance with:
+You can then SSH into the instance with:
 
 ```bash
 ssh ubuntu@<public_ip>

@@ -56,7 +56,10 @@ resource "aws_instance" "ec2" {
   availability_zone      = data.aws_availability_zones.available.names[0]
   vpc_security_group_ids = [aws_security_group.ssh.id]
   key_name               = "ec2"
-  user_data              = file("bootstrap.sh")
+
+  user_data = templatefile("bootstrap.tftpl", {
+    startup_commands = join("\n", var.startup_commands)
+  })
 }
 
 resource "aws_volume_attachment" "home" {
