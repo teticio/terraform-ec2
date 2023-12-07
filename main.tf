@@ -36,7 +36,7 @@ resource "aws_security_group" "ssh" {
   }
 }
 
-resource "aws_key_pair" "ec2" {
+resource "aws_key_pair" "deployer" {
   key_name   = "ec2"
   public_key = file(var.public_key_path)
 }
