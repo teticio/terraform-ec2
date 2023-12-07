@@ -1,6 +1,6 @@
 # Terraform EC2
 
-Terraform code to quickly spin up an EC2 instance in AWS. A persistent EBS volume is also created and mounted at `/home`.
+Terraform code to quickly spin up / tear down an EC2 instance in AWS. A persistent EBS volume is also created and mounted at `/home`.
 
 ## Usage
 
