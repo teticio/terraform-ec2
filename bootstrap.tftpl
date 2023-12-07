@@ -6,7 +6,7 @@ if [ -e /dev/xvdh ]; then
 else
     device=/dev/nvme1n1
 fi
-if ! sudo file -s $device | grep -q "filesystem"; then
+if ! file -s $device | grep -q "filesystem"; then
     mkfs -t ext4 $device
     mount $device /mnt
     rsync -aXv /home/ /mnt/
