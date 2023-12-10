@@ -17,6 +17,7 @@ region          = "eu-west-2"         # AWS region
 instance_type   = "t2.micro"          # EC2 instance type
 volume_size     = 20                  # Size of home EBS volume in GB
 public_key_path = "~/.ssh/id_rsa.pub" # Path to public key
+ingress_ports   = [22]                # Ports to open
 
 # Commands to run on startup (e.g. to install pip)
 startup_commands = [
@@ -70,3 +71,19 @@ fi
 ```
 
 You can then run `df -h /home` to check that the volume has been resized.
+
+## Opening ports
+
+You can, of course, tunnel to any port via SSH on port 22 with
+
+```bash
+ssh -L <local_port>:localhost:<remote_port> ubuntu@<public_ip>
+```
+
+but, if you want to open ports to the public, just set the variable
+
+```terraform
+ingress_ports   = [22, 80, 443]       # Ports to open
+```
+
+to include the ports you want to make accessible (for example to run a webserver on 80 and 443).
