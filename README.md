@@ -60,7 +60,7 @@ To debug issues with the `startup_commands`, you can SSH into the instance and i
 
 ## Grow your own EBS
 
-To increase your the size of your EBS volume without destroying your data, first change the `volume_size` variable in `terraform.tfvars` and connect to your instance. In the instance, run:
+To increase your the size of your EBS volume without destroying your data, first change the `volume_size` variable in `terraform.tfvars`, run `terraform apply -auto-approve` and connect to your instance. In the instance, run:
 
 ```bash
 if [ -e /dev/xvda ]; then
