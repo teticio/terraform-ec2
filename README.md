@@ -56,7 +56,7 @@ or `./terminate.sh`.
 
 If you re-run the apply command, Terraform will create a new instance with a new public IP address. Note that your home EBS volume will persist until you run `terraform destroy -auto-approve`. If you simply change the instance type in `terraform.tfvars` and re-run `terraform apply -auto-approve`, Terraform will create a new instance and attach the existing EBS volume to it.
 
-To debug issues with the `startup_commands`, you can SSH into the instance and inspect the output from `tail -f /var/log/cloud-init-output.log`. Bear in mind that the script may still be running in the background.
+To debug issues with the `startup_commands`, you can SSH into the instance and inspect the output from `tail -f /var/log/cloud-init-output.log`. Bear in mind that the script may still be running in the background. To wait for the script to finish run `cloud-init status --wait`.
 
 ## Grow your own EBS
 

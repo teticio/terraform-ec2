@@ -12,7 +12,11 @@ if ! file -s $device | grep -q "filesystem"; then
     rsync -aXv /home/ /mnt/
     umount /mnt
 fi
+read -r authorized_key < /home/ubuntu/.ssh/authorized_keys
 mount $device /home
+if ! grep -Fxq "$authorized_key" /home/ubuntu/.ssh/authorized_keys; then
+    echo "$authorized_key" >> /home/ubuntu/.ssh/authorized_keys
+fi
 echo "$device /home ext4 defaults,nofail 0 2" >> /etc/fstab
 
 # Install packages etc.
