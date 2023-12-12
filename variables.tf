@@ -1,4 +1,3 @@
-
 variable "name" {
   type    = string
   default = "ec2"
