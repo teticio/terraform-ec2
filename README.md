@@ -100,8 +100,8 @@ aws ec2 wait instance-stopped --instance-ids $instance_id
 volume_id=$(terraform output -json | jq -r '.home_ebs_volume.value')
 aws ec2 detach-volume --volume-id $volume_id
 aws ec2 wait volume-available --volume-id $volume_id
-ami_id=$(aws ec2 create-image --instance-id $instance_id --name "my_ami" --query 'ImageId' --output text)
-aws ec2 wait image-available --image-ids "$ami_id"
+image_id=$(aws ec2 create-image --instance-id $instance_id --name "my_ami" --query 'ImageId' --output text)
+aws ec2 wait image-available --image-ids $image_id
 ```
 
 Then add the following lines to `terraform.tfvars` to select your AMI next time you spin up an instance:
