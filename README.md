@@ -88,7 +88,7 @@ ingress_ports   = [22, 80, 443]       # Ports to open
 
 to include the ports you want to make accessible (for example to run a web server on 80 and 443).
 
-# Bring your own AMI
+## Bring your own AMI
 
 If you plan to always install the same packages every time you spin up an instance, you can create your own AMI with the packages pre-installed by running the following commands:
 
