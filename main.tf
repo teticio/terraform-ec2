@@ -12,16 +12,16 @@ provider "aws" {
 
 data "aws_ami" "ubuntu" {
   most_recent = true
-  owners      = ["099720109477"] # Canonical
+  owners      = [var.ami_owner]
 
   filter {
     name   = "name"
-    values = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04*"]
+    values = [var.ami_name]
   }
 
   filter {
     name   = "architecture"
-    values = ["x86_64"]
+    values = [var.ami_architecture]
   }
 }
 

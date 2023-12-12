@@ -37,7 +37,7 @@ terraform apply -auto-approve
 
 and take a note of the public IP address and ID of the instance. (You can recover these at any time with `terraform output`.) Alternatively, you can run `./create.sh <instance_type>`.
 
-You can then SSH into the instance with:
+You can then SSH into the instance with
 
 ```bash
 ssh ubuntu@<public_ip>
@@ -54,7 +54,7 @@ aws ec2 wait instance-terminated --instance-ids <instance_id>
 
 or `./terminate.sh`.
 
-If you re-run the apply command, Terraform will create a new instance with a new public IP address. Note that your home EBS volume will persist until you run `terraform destroy -auto-approve`. If you simply change the instance type in `terraform.tfvars` and re-run `terraform apply -auto-approve`, Terraform will create a new instance and attach the existing EBS volume to it.
+If you re-run the apply or `./create.sh` command, Terraform will create a new instance with a new public IP address and attach the existing EBS volume to it. Note that your home EBS volume will persist and you will be charged $0.10 per GB-month whether or not it is attached to an EC2 instance (until you run `terraform destroy -auto-approve`).
 
 To debug issues with the `startup_commands`, you can SSH into the instance and inspect the output from `tail -f /var/log/cloud-init-output.log`. Bear in mind that the script may still be running in the background. To wait for the script to finish run `cloud-init status --wait`.
 
@@ -86,4 +86,27 @@ but, if you want to open ports to the public, just set the variable
 ingress_ports   = [22, 80, 443]       # Ports to open
 ```
 
-to include the ports you want to make accessible (for example to run a webserver on 80 and 443).
+to include the ports you want to make accessible (for example to run a web server on 80 and 443).
+
+# Bring your own AMI
+
+If you plan to always install the same packages every time you spin up an instance, you can create your own AMI with the packages pre-installed by running the following commands:
+
+```bash
+instance_id=$(terraform output -json | jq -r '.instance_id.value')
+aws ec2 stop-instances --instance-ids $instance_id
+aws ec2 wait instance-stopped --instance-ids $instance_id
+# Detach home EBS volume, otherwise a snapshot will be created
+volume_id=$(terraform output -json | jq -r '.home_ebs_volume.value')
+aws ec2 detach-volume --volume-id $volume_id
+aws ec2 wait volume-available --volume-id $volume_id
+ami_id=$(aws ec2 create-image --instance-id $instance_id --name "my_ami" --query 'ImageId' --output text)
+aws ec2 wait image-available --image-ids "$ami_id"
+```
+
+Then add the following lines to `terraform.tfvars` to select your AMI next time you spin up an instance:
+
+```terraform
+ami_owner       = "self"              # Owner of AMI
+ami_name        = "my_ami"            # Name of AMI
+```

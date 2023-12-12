@@ -7,5 +7,5 @@ output "instance_id" {
 }
 
 output "home_ebs_volume" {
-  value = aws_instance.ec2.root_block_device.0.volume_id
+  value = aws_ebs_volume.home.id
 }
