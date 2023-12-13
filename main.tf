@@ -27,7 +27,6 @@ data "aws_ami" "ubuntu" {
 
 resource "aws_security_group" "ec2" {
   name        = var.name
-  description = "Allow SSH inbound traffic"
 
   egress {
     from_port   = 0
