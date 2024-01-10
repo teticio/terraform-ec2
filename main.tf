@@ -1,5 +1,6 @@
 provider "aws" {
-  region = var.region
+  profile = var.profile
+  region  = var.region
 
   default_tags {
     tags = {
@@ -25,8 +26,29 @@ data "aws_ami" "ubuntu" {
   }
 }
 
+data "aws_vpc" "default" {
+  count   = var.vpc_id == "" ? 1 : 0
+  default = true
+}
+
+locals {
+  default_vpc = var.vpc_id == "" ? tolist(data.aws_vpc.default.*.id)[0] : var.vpc_id
+}
+
+data "aws_subnets" "vpc" {
+  filter {
+    name   = "vpc-id"
+    values = [local.default_vpc]
+  }
+}
+
+data "aws_subnet" "selected" {
+  id = data.aws_subnets.vpc.ids[0]
+}
+
 resource "aws_security_group" "ec2" {
-  name        = var.name
+  name   = var.name
+  vpc_id = local.default_vpc
 
   egress {
     from_port   = 0
@@ -51,19 +73,16 @@ resource "aws_key_pair" "ec2" {
   public_key = file(var.public_key_path)
 }
 
-data "aws_availability_zones" "available" {
-  state = "available"
-}
-
 resource "aws_ebs_volume" "home" {
-  availability_zone = data.aws_availability_zones.available.names[0]
+  availability_zone = data.aws_subnet.selected.availability_zone
   size              = var.volume_size
 }
 
 resource "aws_instance" "ec2" {
+  subnet_id              = data.aws_subnet.selected.id
   ami                    = data.aws_ami.ubuntu.id
   instance_type          = var.instance_type
-  availability_zone      = data.aws_availability_zones.available.names[0]
+  availability_zone      = data.aws_subnet.selected.availability_zone
   vpc_security_group_ids = [aws_security_group.ec2.id]
   key_name               = var.name
 

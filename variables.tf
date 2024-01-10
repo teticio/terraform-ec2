@@ -3,6 +3,11 @@ variable "name" {
   default = "ec2"
 }
 
+variable "profile" {
+  type    = string
+  default = "default"
+}
+
 variable "region" {
   type    = string
   default = "eu-west-2"
@@ -21,6 +26,11 @@ variable "ami_name" {
 variable "ami_architecture" {
   type    = string
   default = "x86_64"
+}
+
+variable "vpc_id" {
+  type    = string
+  default = ""
 }
 
 variable "instance_type" {
