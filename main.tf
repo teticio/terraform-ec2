@@ -85,6 +85,10 @@ resource "aws_instance" "ec2" {
   availability_zone      = data.aws_subnet.selected.availability_zone
   vpc_security_group_ids = [aws_security_group.ec2.id]
   key_name               = var.name
+  
+  root_block_device {
+    volume_size = var.root_volume_size
+  }
 
   user_data = templatefile("bootstrap.tftpl", {
     startup_commands = join("\n", var.startup_commands)
