@@ -2,7 +2,7 @@
 
 Terraform code to quickly spin up / tear down an EC2 instance in AWS. A persistent EBS volume is also created and mounted at `/home`.
 
-While it is possible to start and stop EC2 instances and thus only pay for the compute you use, you might want to be able to easily switch between instances of different types and sizes depending on your needs. One way to to this is to decouple your home directory from the EC2 instance by mounting a separate EBS volume configured not to be destroyed on termination.
+While it is possible to start and stop EC2 instances and thus only pay for the compute you use, you might want to be able to easily switch between instances of different types and sizes depending on your needs. One way to do this is to decouple your home directory from the EC2 instance by mounting a separate EBS volume configured not to be destroyed on termination.
 
 ## Usage
 
